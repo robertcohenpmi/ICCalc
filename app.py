@@ -25,8 +25,8 @@ currencies = {
     "Other": ""
 }
 
-# Bonus Mapping
-bonus_mapping = {
+# IC Percentages (Grade 1-25)
+ic_mapping = {
     1: 0.00, 2: 0.00, 3: 0.00, 4: 0.00, 5: 0.00,
     6: 0.00, 7: 0.00, 8: 0.00, 9: 0.00, 10: 0.07,
     11: 0.07, 12: 0.13, 13: 0.18, 14: 0.25, 15: 0.30,
@@ -34,7 +34,7 @@ bonus_mapping = {
     21: 0.80, 22: 0.90, 23: 0.95, 24: 1.00, 25: 1.00
 }
 
-# Stock Mapping
+# Stock Mapping (Grade 1-25)
 stock_mapping = {
     1: 0.00, 2: 0.00, 3: 0.00, 4: 0.00, 5: 0.00,
     6: 0.00, 7: 0.00, 8: 0.00, 9: 0.00, 10: 0.08,
@@ -60,13 +60,13 @@ with col2:
     company_mult = st.slider("Company Multiplier (%)", min_value=0, max_value=150, value=100)
 
 # 4. Calculation Logic
-bonus_pct = bonus_mapping.get(salary_grade, 0)
+ic_pct = ic_mapping.get(salary_grade, 0)
 stock_pct = stock_mapping.get(salary_grade, 0)
 p_mult_decimal = personal_mult / 100
 c_mult_decimal = company_mult / 100
 
-# Bonus uses both Multipliers
-predicted_bonus = abs_value * bonus_pct * p_mult_decimal * c_mult_decimal
+# IC uses both Personal and Company Multipliers
+predicted_ic = abs_value * ic_pct * p_mult_decimal * c_mult_decimal
 
 # Stock uses Company Multiplier only
 predicted_stock = abs_value * stock_pct * c_mult_decimal
@@ -74,13 +74,13 @@ predicted_stock = abs_value * stock_pct * c_mult_decimal
 # 5. Visual Output
 st.divider()
 
-if bonus_pct > 0 or stock_pct > 0:
+if ic_pct > 0 or stock_pct > 0:
     st.subheader("Calculation Results")
     
     m_col1, m_col2 = st.columns(2)
     
     with m_col1:
-        st.metric(label="Predicted Bonus", value=f"{currency_symbol}{predicted_bonus:,.2f}")
+        st.metric(label="Predicted IC", value=f"{currency_symbol}{predicted_ic:,.2f}")
     
     with m_col2:
         if stock_pct > 0:
@@ -89,7 +89,7 @@ if bonus_pct > 0 or stock_pct > 0:
         else:
             st.metric(label="Stock Grant", value="Ineligible")
 
-    # Eligibility Warnings
+    # Eligibility Warnings for Stock
     if salary_grade in [10, 11]:
         st.warning("⚠️ **Stock Eligibility:** At Grade 10-11, stock is typically awarded only to the top 5% of performers.")
     elif salary_grade in [12, 13]:
@@ -99,10 +99,10 @@ if bonus_pct > 0 or stock_pct > 0:
     with st.expander("View Calculation Breakdown", expanded=True):
         safe_symbol = currency_symbol.replace("$", "\\$")
         
-        # Bonus Section
-        st.markdown("### 💵 Bonus Breakdown")
-        st.write(f"Target Bonus: **{bonus_pct * 100:.1f}%**")
-        st.latex(rf"\text{{Bonus}} = \text{{{safe_symbol}}}{abs_value:,} \times {bonus_pct} \times {p_mult_decimal} \times {c_mult_decimal}")
+        # IC Section
+        st.markdown("### 💵 Incentive Compensation (IC) Breakdown")
+        st.write(f"Target IC Percentage: **{ic_pct * 100:.1f}%**")
+        st.latex(rf"\text{{IC}} = \text{{{safe_symbol}}}{abs_value:,} \times {ic_pct} \times {p_mult_decimal} \times {c_mult_decimal}")
         
         # Stock Section
         if stock_pct > 0:
@@ -111,12 +111,12 @@ if bonus_pct > 0 or stock_pct > 0:
             st.write(f"*Applied Multiplier: Company Performance ({company_mult}%)*")
             st.latex(rf"\text{{Stock}} = \text{{{safe_symbol}}}{abs_value:,} \times {stock_pct} \times {c_mult_decimal}")
             
-            total_comp = predicted_bonus + predicted_stock
+            total_comp = predicted_ic + predicted_stock
             st.write("---")
-            st.write(f"**Total Potential Combined Value:** {currency_symbol}{total_comp:,.2f}")
+            st.write(f"**Total Potential Combined Value (IC + Stock):** {currency_symbol}{total_comp:,.2f}")
 
 else:
-    st.warning(f"**Eligibility Note:** Salary Grade {salary_grade} is currently ineligible for IC Bonus or Stock participation.")
+    st.warning(f"**Eligibility Note:** Salary Grade {salary_grade} is currently ineligible for Incentive Compensation (IC) or Stock participation.")
 
 st.divider()
 st.warning("Keep in mind: Final amounts are subject to board approval, vesting schedules, and local taxes.")
