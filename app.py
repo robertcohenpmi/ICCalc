@@ -37,8 +37,8 @@ ic_mapping = {
 # Stock Mapping (Grade 1-25)
 stock_mapping = {
     1: 0.00, 2: 0.00, 3: 0.00, 4: 0.00, 5: 0.00,
-    6: 0.00, 7: 0.00, 8: 0.00, 9: 0.00, 10: 0.08,
-    11: 0.08, 12: 0.10, 13: 0.18, 14: 0.20, 15: 0.22,
+    6: 0.00, 7: 0.00, 8: 0.00, 9: 0.00, 10: 0.00,
+    11: 0.00, 12: 0.00, 13: 0.00, 14: 0.20, 15: 0.22,
     16: 0.25, 17: 0.28, 18: 0.32, 19: 0.35, 20: 0.40,
     21: 0.45, 22: 0.50, 23: 0.55, 24: 0.60, 25: 0.70
 }
@@ -87,13 +87,13 @@ if ic_pct > 0 or stock_pct > 0:
             st.metric(label="New Stock Grant Value", value=f"{currency_symbol}{predicted_stock:,.2f}")
             st.caption("Note: Stock is issued as a USD equivalent value.")
         else:
-            st.metric(label="Stock Grant", value="Ineligible")
+            st.metric(label="Stock Grant", value="No default award")
 
     # Eligibility Warnings for Stock
     if salary_grade in [10, 11]:
-        st.warning("⚠️ **Stock Eligibility:** At Grade 10-11, stock is typically awarded only to the top 5% of performers.")
+        st.warning("⚠️ **Stock Eligibility:** At Grade 10-11, stock is awarded only to the top 5% of performers.")
     elif salary_grade in [12, 13]:
-        st.warning("⚠️ **Stock Eligibility:** At Grade 12-13, stock is typically awarded only to the top 20% of performers.")
+        st.warning("⚠️ **Stock Eligibility:** At Grade 12-13, stock is awarded only to the top 20% of performers.")
 
     # Detailed Breakdown
     with st.expander("View Calculation Breakdown", expanded=True):
