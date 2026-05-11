@@ -102,7 +102,7 @@ with col1:
         value=100000,
         step=1000,
     )
-    salary_grade = st.selectbox("Salary Grade", options=list(range(1, 26)))
+    salary_grade = st.selectbox("Salary Grade", options=list(range(8, 17)))
 
 with col2:
     personal_mult = st.slider(
