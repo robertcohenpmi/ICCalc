@@ -183,13 +183,12 @@ if not eligible:
 # You specifically called out: not available to all for SG 10-13.
 if int(salary_grade) in (10, 11, 12, 13) and stock_pct > 0:
     st.warning(
-        "**Stock participation note (SG 10–13):** Stock eligibility and participation may vary by population, contract, "
-        "and local policy — **not everyone in these grades receives stock**. Treat this estimate as indicative only.",
+        "**Stock participation note (SG 10–13):** Stock eligibility is by exception in this salary grade.",
         icon="⚠️",
     )
 
 st.warning(
-    "Keep in mind: final amounts are subject to policy, board approval, vesting schedules, and local taxes.",
+    "Final amounts are subject to policy, board approval, vesting schedules, and local taxes.",
     icon="🧾",
 )
 
